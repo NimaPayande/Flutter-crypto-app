@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.5
   intl: ^0.17.0
+  syncfusion_flutter_charts: ^20.2.45
+  flutter_spinkit: ^5.1.0
 
 dev_dependencies:
   flutter_test:
