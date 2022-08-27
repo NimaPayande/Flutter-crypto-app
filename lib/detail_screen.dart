@@ -64,16 +64,15 @@ class _DetailScreenState extends State<DetailScreen> {
                                 : kGreenColor,
                         child: Center(
                           child: Text(
-                            widget.coin.priceChangePercentage7DInCurrency!
-                                .toStringAsFixed(3),
-                            style: TextStyle(color: Colors.white),
+                            '${widget.coin.priceChangePercentage7DInCurrency!.toStringAsFixed(3)}%',
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 80,
                 ),
                 Chart(
@@ -82,6 +81,92 @@ class _DetailScreenState extends State<DetailScreen> {
                   blurRadius: 20,
                   spreadRadius: -10,
                   opacity: 0,
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    CircleAvatar(
+                      radius: 24,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(widget.coin.image!),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      '${widget.coin.name!} (${widget.coin.symbol!.toUpperCase()})',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: 330,
+                  height: 180,
+                  decoration: BoxDecoration(
+                      color: Colors.blueAccent.withOpacity(.1),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          RichText(
+                              text: TextSpan(text: 'Market Cap: ', children: [
+                            TextSpan(
+                              text: widget.coin.marketCap.toString().length ==
+                                      12
+                                  ? '\$${widget.coin.marketCap.toString().substring(0, 3)}b'
+                                  : '\$${formatter.format(widget.coin.marketCap)}',
+                            )
+                          ])),
+                          const Divider(
+                            color: Colors.white,
+                            height: 20,
+                          ),
+                          RichText(
+                              text: TextSpan(
+                                  text: 'Market Cap Rank: ',
+                                  children: [
+                                TextSpan(
+                                    text: widget.coin.marketCapRank.toString())
+                              ])),
+                          const Divider(
+                            color: Colors.white,
+                            height: 20,
+                          ),
+                          RichText(
+                              text: TextSpan(
+                                  text: 'High 24h Price: ',
+                                  children: [
+                                TextSpan(
+                                    text:
+                                        '\$${formatter.format(widget.coin.high24H)}')
+                              ])),
+                          const Divider(
+                            color: Colors.white,
+                            height: 20,
+                          ),
+                          RichText(
+                              text: TextSpan(
+                                  text: 'Low 24h Price: ',
+                                  children: [
+                                TextSpan(
+                                    text:
+                                        '\$${formatter.format(widget.coin.low24H)}')
+                              ]))
+                        ]),
+                  ),
                 ),
               ],
             ),
