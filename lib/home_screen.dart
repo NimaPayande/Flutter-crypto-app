@@ -1,13 +1,11 @@
 import 'dart:ui';
-
-import 'package:crypto_app/constants.dart';
-import 'package:crypto_app/models/coin.dart';
-import 'package:crypto_app/services/coin_service.dart';
+import './constants.dart';
+import './models/coin.dart';
+import './services/coin_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-
-import 'constants.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,6 +21,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _future = fetchData();
     super.initState();
   }
+
+  //* loading Animation
+  final spinkit = const SpinKitThreeBounce(
+    color: kGreenColor,
+    size: 30,
+  );
 
   checkPercentage(data, int index) {
     return data[index]
@@ -108,6 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Container(
                                       decoration: BoxDecoration(boxShadow: [
                                         BoxShadow(
+                                          // Chart Glow
                                           color: checkPercentage(data, index),
                                           blurRadius: 30,
                                           spreadRadius: -10,
@@ -173,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (snapshot.hasError) {
                     throw snapshot.error.toString();
                   }
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: spinkit);
                 },
               ),
             ),
