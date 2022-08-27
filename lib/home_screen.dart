@@ -1,4 +1,8 @@
 import 'dart:ui';
+import 'package:crypto_app/chart.dart';
+import 'package:crypto_app/widgets/background.dart';
+import 'package:crypto_app/detail_screen.dart';
+import 'package:flutter/cupertino.dart';
 import './constants.dart';
 import './models/coin.dart';
 import './services/coin_service.dart';
@@ -37,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
         : kGreenColor;
   }
 
+  // Format values like this => 100,000,000
   final formatter = NumberFormat.decimalPattern();
   @override
   Widget build(BuildContext context) {
@@ -68,122 +73,91 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          // blur Circle for background
-          Center(
-              child: Padding(
-            padding: const EdgeInsets.only(left: 200, top: 200),
-            child: CircleAvatar(
-              radius: 1000,
-              backgroundColor: kRedColor.withOpacity(.4),
-            ),
-          )),
-          // blur Circle for background
-          Center(
-              child: Padding(
-            padding: const EdgeInsets.only(right: 200, bottom: 200),
-            child: CircleAvatar(
-              radius: 1000,
-              backgroundColor: Colors.blue.withOpacity(.4),
-            ),
-          )),
-          ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                  sigmaX: 100, sigmaY: 100, tileMode: TileMode.mirror),
-              child: FutureBuilder<List<Coin>>(
-                future: _future,
-                builder: (context, snapshot) {
-                  final data = snapshot.data;
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: data!.length,
-                        itemBuilder: (context, index) {
-                          return Stack(
+      body: Background(
+        child: FutureBuilder<List<Coin>>(
+          future: _future,
+          builder: (context, snapshot) {
+            final data = snapshot.data;
+            if (snapshot.hasData) {
+              return ListView.builder(
+                  itemCount: data!.length,
+                  itemBuilder: (context, index) {
+                    return Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 110, top: 20),
+                          child: Center(
+                            child: SizedBox(
+                                height: 30,
+                                width: 60,
+                                child: Chart(
+                                  blurRadius: 30,
+                                  spreadRadius: -10,
+                                  data: data[index],
+                                )),
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(
+                            //! Ending with "..." when Flutter Text exceeds a certain length.
+                            data[index].name!.length >= 13
+                                ? '${data[index].name!.substring(0, 13)}...'
+                                : data[index].name!,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                          leading: CircleAvatar(
+                            radius: 20,
+                            backgroundImage: NetworkImage(
+                              data[index].image!,
+                            ),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          trailing: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 110, top: 20),
-                                child: Center(
-                                  child: SizedBox(
-                                    height: 30,
-                                    width: 60,
-                                    child: Container(
-                                      decoration: BoxDecoration(boxShadow: [
-                                        BoxShadow(
-                                          // Chart Glow
-                                          color: checkPercentage(data, index),
-                                          blurRadius: 30,
-                                          spreadRadius: -10,
-                                        )
-                                      ]),
-                                      child: SfSparkLineChart(
-                                          axisLineWidth: 0,
-                                          data:
-                                              data[index].sparklineIn7D!.price,
-                                          color: checkPercentage(data, index)),
-                                    ),
-                                  ),
-                                ),
+                              Text(
+                                '\$${formatter.format(data[index].currentPrice)}',
+                                style: const TextStyle(color: Colors.white),
                               ),
-                              ListTile(
-                                title: Text(
-                                  //! Ending with "..." when Flutter Text exceeds a certain length.
-                                  data[index].name!.length >= 13
-                                      ? '${data[index].name!.substring(0, 13)}...'
-                                      : data[index].name!,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                leading: CircleAvatar(
-                                  radius: 20,
-                                  backgroundImage: NetworkImage(
-                                    data[index].image!,
-                                  ),
-                                  backgroundColor: Colors.transparent,
-                                ),
-                                trailing: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      '\$${formatter.format(data[index].currentPrice)}',
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
-                                    Text(
-                                        data[index]
-                                                .priceChangePercentage7DInCurrency
-                                                .toString()
-                                                .contains('-')
-                                            ? '${data[index].priceChangePercentage7DInCurrency!.toStringAsFixed(2)}%'
-                                            : '+${data[index].priceChangePercentage7DInCurrency!.toStringAsFixed(3)}%',
-                                        style: TextStyle(
-                                          color: checkPercentage(data, index),
-                                        ))
-                                  ],
-                                ),
-                                tileColor: Colors.transparent,
-                                subtitle: Text(
-                                  data[index].symbol!.toUpperCase(),
-                                  style: const TextStyle(color: Colors.white60),
-                                ),
-                              ),
+                              Text(
+                                  data[index]
+                                          .priceChangePercentage7DInCurrency
+                                          .toString()
+                                          .contains('-')
+                                      ? '${data[index].priceChangePercentage7DInCurrency!.toStringAsFixed(2)}%'
+                                      : '+${data[index].priceChangePercentage7DInCurrency!.toStringAsFixed(3)}%',
+                                  style: TextStyle(
+                                    color: checkPercentage(data, index),
+                                  ))
                             ],
-                          );
-                        });
-                  } else if (snapshot.hasError) {
-                    throw snapshot.error.toString();
-                  }
-                  return Center(child: spinkit);
-                },
-              ),
-            ),
-          ),
-        ],
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailScreen(
+                                          coin: data[index],
+                                        )));
+                          },
+                          tileColor: Colors.transparent,
+                          subtitle: Text(
+                            data[index].symbol!.toUpperCase(),
+                            style: const TextStyle(color: Colors.white60),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            } else if (snapshot.hasError) {
+              throw snapshot.error.toString();
+            }
+            return Center(child: spinkit);
+          },
+        ),
       ),
     );
   }
