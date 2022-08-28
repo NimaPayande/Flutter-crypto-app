@@ -1,8 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-
-import 'constants.dart';
+import '../constants.dart';
 
 class Background extends StatelessWidget {
   const Background({Key? key, required this.child}) : super(key: key);
