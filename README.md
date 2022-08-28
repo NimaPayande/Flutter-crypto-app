@@ -1,6 +1,13 @@
-# crypto_app
+# Flutter Crypto App
 
-A new Flutter project.
+## Screenshots
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/96375955/187079069-0542cc2f-2ce6-4139-8508-c748fd059fba.png" width="300">
+  <img src="https://user-images.githubusercontent.com/96375955/187079056-fc42c191-3205-436e-b753-0cdce59f46b8.png" width="300">
+  <img src="https://user-images.githubusercontent.com/96375955/187079061-5736bca7-c99e-4a45-a152-bb0034b4d73e.png" width="300">
+  </p>
+
+## [Instagram](https://instagram.com/niima.dev)
 
 ## Getting Started
 
