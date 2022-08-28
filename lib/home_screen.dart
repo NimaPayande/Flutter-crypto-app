@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:crypto_app/chart.dart';
+import 'package:crypto_app/widgets/chart.dart';
 import 'package:crypto_app/widgets/background.dart';
 import 'package:crypto_app/detail_screen.dart';
 import './constants.dart';

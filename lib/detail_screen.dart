@@ -1,4 +1,4 @@
-import 'package:crypto_app/chart.dart';
+import 'package:crypto_app/widgets/chart.dart';
 import 'package:crypto_app/widgets/background.dart';
 import 'package:crypto_app/constants.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,10 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                     IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.star_border_rounded))
+                        icon: const Icon(
+                          Icons.star_border_rounded,
+                          color: Colors.transparent,
+                        ))
                   ],
                 ),
                 const SizedBox(

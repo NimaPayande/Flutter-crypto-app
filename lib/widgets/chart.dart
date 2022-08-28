@@ -1,7 +1,7 @@
 import 'package:crypto_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
-import 'models/coin.dart';
+import '../models/coin.dart';
 
 class Chart extends StatelessWidget {
   Chart(
