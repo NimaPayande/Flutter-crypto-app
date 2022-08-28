@@ -10,8 +10,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+          useMaterial3: true,
+          iconTheme: const IconThemeData(color: Colors.white),
+          fontFamily: 'poppins',
+          textTheme: const TextTheme(
+              titleLarge:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+              bodyLarge: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15),
+              bodyMedium: TextStyle(color: Colors.white),
+              bodySmall: TextStyle(color: Colors.white60, fontSize: 14))),
+      debugShowCheckedModeBanner: false,
       home: const HomeScreen(),
     );
   }

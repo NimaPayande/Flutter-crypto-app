@@ -3,7 +3,6 @@ import 'package:crypto_app/widgets/background.dart';
 import 'package:crypto_app/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'models/coin.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -37,7 +36,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         icon: const Icon(Icons.arrow_back_ios_rounded)),
                     Text(
                       widget.coin.name!,
-                      style: const TextStyle(color: Colors.white, fontSize: 20),
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     IconButton(
                         onPressed: () {},
@@ -52,7 +51,10 @@ class _DetailScreenState extends State<DetailScreen> {
                   children: [
                     Text(
                       '\$${formatter.format(widget.coin.currentPrice)}',
-                      style: const TextStyle(color: Colors.white, fontSize: 28),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(fontSize: 30),
                     ),
                     SizedBox(
                       height: 40,
@@ -78,9 +80,9 @@ class _DetailScreenState extends State<DetailScreen> {
                 Chart(
                   isDetailScreen: true,
                   data: widget.coin,
-                  blurRadius: 20,
+                  blurRadius: 50,
                   spreadRadius: -10,
-                  opacity: 0,
+                  opacity: 0.05,
                 ),
                 const SizedBox(
                   height: 30,
@@ -112,7 +114,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 Container(
                   width: 330,
-                  height: 180,
+                  height: 190,
                   decoration: BoxDecoration(
                       color: Colors.blueAccent.withOpacity(.1),
                       borderRadius: BorderRadius.circular(15)),
@@ -121,50 +123,26 @@ class _DetailScreenState extends State<DetailScreen> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          RichText(
-                              text: TextSpan(text: 'Market Cap: ', children: [
-                            TextSpan(
-                              text: widget.coin.marketCap.toString().length ==
-                                      12
-                                  ? '\$${widget.coin.marketCap.toString().substring(0, 3)}b'
-                                  : '\$${formatter.format(widget.coin.marketCap)}',
-                            )
-                          ])),
+                          Text(
+                            'Market Cap: \$${formatter.format(widget.coin.marketCap)}',
+                          ),
                           const Divider(
                             color: Colors.white,
                             height: 20,
                           ),
-                          RichText(
-                              text: TextSpan(
-                                  text: 'Market Cap Rank: ',
-                                  children: [
-                                TextSpan(
-                                    text: widget.coin.marketCapRank.toString())
-                              ])),
+                          Text('Market Cap Rank: ${widget.coin.marketCapRank}'),
                           const Divider(
                             color: Colors.white,
                             height: 20,
                           ),
-                          RichText(
-                              text: TextSpan(
-                                  text: 'High 24h Price: ',
-                                  children: [
-                                TextSpan(
-                                    text:
-                                        '\$${formatter.format(widget.coin.high24H)}')
-                              ])),
+                          Text(
+                              'High 24h Price : \$${formatter.format(widget.coin.high24H)}'),
                           const Divider(
                             color: Colors.white,
                             height: 20,
                           ),
-                          RichText(
-                              text: TextSpan(
-                                  text: 'Low 24h Price: ',
-                                  children: [
-                                TextSpan(
-                                    text:
-                                        '\$${formatter.format(widget.coin.low24H)}')
-                              ]))
+                          Text(
+                              'Low 24h Price: \$${formatter.format(widget.coin.low24H)}')
                         ]),
                   ),
                 ),

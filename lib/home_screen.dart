@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:crypto_app/chart.dart';
 import 'package:crypto_app/widgets/background.dart';
 import 'package:crypto_app/detail_screen.dart';
-import 'package:flutter/cupertino.dart';
 import './constants.dart';
 import './models/coin.dart';
 import './services/coin_service.dart';
@@ -54,19 +53,10 @@ class _HomeScreenState extends State<HomeScreen> {
             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: AppBar(
               backgroundColor: Colors.black.withOpacity(.2),
-              title: const Text(
+              title: Text(
                 'Discover',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-              actions: [
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                    ))
-              ],
               centerTitle: false,
             ),
           ),
@@ -104,10 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ? '${data[index].name!.substring(0, 13)}...'
                                 : data[index].name!,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            ),
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           leading: CircleAvatar(
                             radius: 20,
@@ -121,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Text(
                                 '\$${formatter.format(data[index].currentPrice)}',
-                                style: const TextStyle(color: Colors.white),
+                                style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
                                   data[index]
@@ -144,10 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         )));
                           },
                           tileColor: Colors.transparent,
-                          subtitle: Text(
-                            data[index].symbol!.toUpperCase(),
-                            style: const TextStyle(color: Colors.white60),
-                          ),
+                          subtitle: Text(data[index].symbol!.toUpperCase(),
+                              style: Theme.of(context).textTheme.bodySmall),
                         ),
                       ],
                     );
