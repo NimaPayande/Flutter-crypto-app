@@ -40,6 +40,81 @@ class _HomeScreenState extends State<HomeScreen> {
         : kGreenColor;
   }
 
+  Map sortBy = {
+    'Price': false,
+    'Name': false,
+    'Market Cap': false,
+  };
+  void sortData(
+    List<Coin> data,
+  ) {
+    if (sortBy.values.elementAt(0)) {
+      // if sort by Price == true
+      data.sort(
+        (b, a) => a.currentPrice!.compareTo(b.currentPrice!),
+      );
+    } else if (sortBy.values.elementAt(1)) {
+      // if sort by Name == true
+      data.sort(
+        (a, b) => a.name!.compareTo(b.name!),
+      );
+    } else if (sortBy.values.elementAt(2)) {
+      // if sort by Market Cap == true
+      data.sort(
+        (b, a) => a.marketCap!.compareTo(b.marketCap!),
+      );
+    }
+  }
+
+  void showCustomDialog() {
+    showDialog(
+        context: context,
+        useSafeArea: true,
+        builder: (context) {
+          return Container(
+            margin: const EdgeInsets.all(20),
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              backgroundColor: Colors.white,
+              title: Text(
+                'Sort By:',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: Colors.black, fontWeight: FontWeight.w600),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(3, (index) {
+                  return TextButton(
+                    onPressed: () {
+                      setState(() {
+                        sortBy.updateAll(
+                            (key, value) => false); // Set all values ​​to false
+                        sortBy.update(
+                            sortBy.keys.elementAt(index),
+                            (value) =>
+                                value = true); // Set selected values ​​to true
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      sortBy.keys.elementAt(index),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Colors.black),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          );
+        });
+  }
+
   // Format values like this => 100,000,000
   final formatter = NumberFormat.decimalPattern();
   @override
@@ -58,6 +133,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               centerTitle: false,
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      showCustomDialog();
+                    },
+                    icon: const Icon(
+                      Icons.sort,
+                      color: Colors.white,
+                    ))
+              ],
             ),
           ),
         ),
@@ -72,6 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListView.builder(
                   itemCount: data!.length,
                   itemBuilder: (context, index) {
+                    sortData(data);
                     return Stack(
                       children: [
                         Padding(
